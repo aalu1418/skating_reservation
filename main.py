@@ -1,6 +1,7 @@
 from selenium import webdriver
 from selenium.webdriver.support.ui import Select
-import time, re
+from selenium.webdriver.firefox.options import Options
+import time, re, sys
 
 import env #password file
 
@@ -65,19 +66,24 @@ class Skating():
 
     # find the correct time (logic to cycle through page and find correct button to press)
     def selectTime(self, timeSelect):
-        data = self.driver.find_elements_by_xpath("//tr[@id='activity-course-row']")
+        try:
+            data = self.driver.find_elements_by_xpath("//tr[@id='activity-course-row']")
 
-        for element in data:
-            if timeSelect in element.text:
-                html = element.get_attribute('innerHTML')
-                match = re.findall(r'href=[\'"]?([^\'" >]+)', html)
-                url = [s for s in match if "MyBasket" in s]
-                self.driver.find_element_by_xpath("//a[@href='"+url[0].replace("&amp;", "&")+"']").click()
-                time.sleep(self.retryTime)
-                return
+            for element in data:
+                if timeSelect in element.text:
+                    html = element.get_attribute('innerHTML')
+                    match = re.findall(r'href=[\'"]?([^\'" >]+)', html)
+                    url = [s for s in match if "MyBasket" in s]
+                    self.driver.find_element_by_xpath("//a[@href='"+url[0].replace("&amp;", "&")+"']").click()
+                    time.sleep(self.retryTime)
+                    return
 
-        self.prevPage()
-        self.selectTime(time)
+            self.prevPage()
+            self.selectTime(time)
+        except Exception as e:
+            print("Retrying selectTime")
+            time.sleep(self.retryTime)
+            self.selectTime(timeSelect)
 
     # register all members of the family
     def registerAll(self):
@@ -125,13 +131,28 @@ class Skating():
         time.sleep(5*self.retryTime)
         self.driver.close()
 
+class Headless(Skating):
+    def __init__(self, env):
+        options = Options()
+        options.add_argument('-headless')
+        self.driver = webdriver.Firefox(executable_path='geckodriver', options=options)
+        self.driver.get("https://efun.toronto.ca/TorontoFun/Start/Start.asp")
+        self.clientNumber = env.clientNumber
+        self.familyNumber = env.familyNumber
+        self.retryTime = 1
+        self.startTime = time.time()
+
 if __name__ == '__main__':
-    reserve = Skating(env)
+    if sys.argv[1] == '--headless':
+        reserve = Headless(env)
+    else:
+        reserve = Skating(env)
+
     reserve.login()
     reserve.skatePage()
     reserve.selectPark(env.park)
     reserve.lastPage()
     reserve.selectTime(env.time)
     reserve.registerAll()
-    # reserve.complete()
-    # reserve.close()
+    reserve.complete()
+    reserve.close()

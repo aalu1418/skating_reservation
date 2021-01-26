@@ -13,4 +13,23 @@ time="9:00PM"
 Run the program using:
 ```
 python3 main.py
+
+Options:
+--headless  (headless operation, no browser GUI)
+```
+
+## GCP
+Debian 10, f1-microVM, 10GB storage
+
+Installation:
+```
+sudo apt-get install python3-pip git wget firefox-esr
+pip3 install selenium
+```
+
+Install geckodriver:
+```
+wget https://github.com/mozilla/geckodriver/releases/download/v0.29.0/geckodriver-v0.29.0-linux32.tar.gz
+tar -xf geckodriver-v0.29.0-linux32.tar.gz
+sudo mv geckodriver /usr/bin/geckodriver
 ```
