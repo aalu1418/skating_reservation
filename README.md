@@ -33,3 +33,11 @@ wget https://github.com/mozilla/geckodriver/releases/download/v0.29.0/geckodrive
 tar -xf geckodriver-v0.29.0-linux32.tar.gz
 sudo mv geckodriver /usr/bin/geckodriver
 ```
+
+## CRON Job
+[Setting up a CRON Job](https://vitux.com/how-to-setup-a-cron-job-in-debian-10/)
+
+Run at 12:50 GMT (7:50 ET) on Thursday + Saturday during January, February, March
+```
+50 12 * 1,2,3 4,6 /usr/bin/python3 /...path to file/gcp.py >> /...path to log/log.log 2>&1
+```

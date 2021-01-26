@@ -143,10 +143,13 @@ class Headless(Skating):
         self.startTime = time.time()
 
 if __name__ == '__main__':
-    if sys.argv[1] == '--headless':
-        reserve = Headless(env)
-    else:
+    if len(sys.argv) == 1:
         reserve = Skating(env)
+    else:
+        if sys.argv[1] == '--headless':
+            reserve = Headless(env)
+        else:
+            reserve = Skating(env)
 
     reserve.login()
     reserve.skatePage()
