@@ -11,6 +11,8 @@ class Skating():
         self.driver.get("https://efun.toronto.ca/TorontoFun/Start/Start.asp")
         self.clientNumber = env.clientNumber
         self.familyNumber = env.familyNumber
+        self.parkName = env.park
+        self.reserveTime = env.time
         self.retryTime = 1
         self.startTime = time.time()
 
@@ -33,16 +35,16 @@ class Skating():
             self.skatePage()
 
     # select the park for reservation
-    def selectPark(self, park):
+    def selectPark(self):
         try:
             self.park = Select(self.driver.find_element_by_name('ComplexId'))
-            self.park.select_by_visible_text(park)
+            self.park.select_by_visible_text(self.parkName)
             self.driver.find_element_by_xpath("//a[@title='Show Courses']").click()
             time.sleep(self.retryTime)
         except Exception as e:
             print("Retrying selectPark")
             time.sleep(self.retryTime)
-            self.selectPark(park)
+            self.selectPark()
 
     # search for 1 week out from the day
     def lastPage(self):
@@ -52,7 +54,7 @@ class Skating():
         except Exception as e:
             print("Retrying lastPage")
             time.sleep(self.retryTime)
-            self.lastPage(park)
+            self.lastPage()
 
     # move up 1 page
     def prevPage(self):
@@ -62,15 +64,14 @@ class Skating():
         except Exception as e:
             print("Retrying prevPage")
             time.sleep(self.retryTime)
-            self.prevPage(park)
+            self.prevPage()
 
     # find the correct time (logic to cycle through page and find correct button to press)
-    def selectTime(self, timeSelect):
+    def selectTime(self):
         try:
             data = self.driver.find_elements_by_xpath("//tr[@id='activity-course-row']")
-
             for element in data:
-                if timeSelect in element.text:
+                if self.reserveTime in element.text:
                     html = element.get_attribute('innerHTML')
                     match = re.findall(r'href=[\'"]?([^\'" >]+)', html)
                     url = [s for s in match if "MyBasket" in s]
@@ -83,7 +84,7 @@ class Skating():
         except Exception as e:
             print("Retrying selectTime")
             time.sleep(self.retryTime)
-            self.selectTime(timeSelect)
+            self.selectTime()
 
     # register all members of the family
     def registerAll(self):
@@ -139,6 +140,8 @@ class Headless(Skating):
         self.driver.get("https://efun.toronto.ca/TorontoFun/Start/Start.asp")
         self.clientNumber = env.clientNumber
         self.familyNumber = env.familyNumber
+        self.parkName = env.park
+        self.reserveTime = env.time
         self.retryTime = 1
         self.startTime = time.time()
 
@@ -153,9 +156,9 @@ if __name__ == '__main__':
 
     reserve.login()
     reserve.skatePage()
-    reserve.selectPark(env.park)
+    reserve.selectPark()
     reserve.lastPage()
-    reserve.selectTime(env.time)
+    reserve.selectTime()
     reserve.registerAll()
     reserve.complete()
     reserve.close()

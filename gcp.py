@@ -26,7 +26,7 @@ if __name__ == '__main__':
     reserve = Headless(env)
     reserve.login()
     reserve.skatePage()
-    reserve.selectPark(env.park)
+    reserve.selectPark()
 
     #logic for maintain an active session (checks every 15 seconds)
     lastPage = False
@@ -46,7 +46,7 @@ if __name__ == '__main__':
     if lastPage is not True:
         reserve.lastPage()
 
-    reserve.selectTime(env.time)
+    reserve.selectTime()
     reserve.registerAll()
     reserve.complete()
     reserve.close()
