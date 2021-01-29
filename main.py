@@ -8,21 +8,19 @@ import env #password file
 class Skating():
     def __init__(self, env):
         self.driver = webdriver.Firefox()
-        self.driver.get("https://efun.toronto.ca/TorontoFun/Start/Start.asp")
-        self.clientNumber = env.clientNumber
-        self.familyNumber = env.familyNumber
-        self.parkName = env.park
-        self.reserveTime = env.time
-        self.retryTime = 1
-        self.startTime = time.time()
+        self.env = env
 
     #login to the eFun platform
     def login(self):
+        self.driver.get("https://efun.toronto.ca/TorontoFun/Start/Start.asp")
+        self.retryTime = 1
+        self.startTime = time.time()
+
         self.driver.find_element_by_xpath("//a[@title='Click here to log in.']").click()
         client = self.driver.find_element_by_id("ClientBarcode")
-        client.send_keys(env.clientNumber)
+        client.send_keys(self.env.clientNumber)
         password = self.driver.find_element_by_id("AccountPIN")
-        password.send_keys(env.familyNumber)
+        password.send_keys(self.env.familyNumber)
         self.driver.find_element_by_id("Enter").click()
 
     #go to the reserve skate page
@@ -38,7 +36,7 @@ class Skating():
     def selectPark(self):
         try:
             self.park = Select(self.driver.find_element_by_name('ComplexId'))
-            self.park.select_by_visible_text(self.parkName)
+            self.park.select_by_visible_text(self.env.park)
             self.driver.find_element_by_xpath("//a[@title='Show Courses']").click()
             time.sleep(self.retryTime)
         except Exception as e:
@@ -71,7 +69,7 @@ class Skating():
         try:
             data = self.driver.find_elements_by_xpath("//tr[@id='activity-course-row']")
             for element in data:
-                if self.reserveTime in element.text:
+                if self.env.time in element.text:
                     html = element.get_attribute('innerHTML')
                     match = re.findall(r'href=[\'"]?([^\'" >]+)', html)
                     url = [s for s in match if "MyBasket" in s]
@@ -137,13 +135,7 @@ class Headless(Skating):
         options = Options()
         options.add_argument('-headless')
         self.driver = webdriver.Firefox(executable_path='geckodriver', options=options)
-        self.driver.get("https://efun.toronto.ca/TorontoFun/Start/Start.asp")
-        self.clientNumber = env.clientNumber
-        self.familyNumber = env.familyNumber
-        self.parkName = env.park
-        self.reserveTime = env.time
-        self.retryTime = 1
-        self.startTime = time.time()
+        self.env = env
 
 if __name__ == '__main__':
     if len(sys.argv) == 1:

@@ -34,6 +34,11 @@ tar -xf geckodriver-v0.29.0-linux32.tar.gz
 sudo mv geckodriver /usr/bin/geckodriver
 ```
 
+## Raspberry Pi
+TODO: Need to build headless chrome functionality.
+
+[ChromeDriver installation for Raspberry Pi](https://ivanderevianko.com/2020/01/selenium-chromedriver-for-raspberrypi)
+
 ## CRON Job
 [Setting up a CRON Job](https://vitux.com/how-to-setup-a-cron-job-in-debian-10/)
 
