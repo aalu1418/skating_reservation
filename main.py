@@ -132,19 +132,35 @@ class Skating():
 
 class Headless(Skating):
     def __init__(self, env):
-        options = Options()
+        options = webdriver.firefox.options.Options()
         options.add_argument('-headless')
         self.driver = webdriver.Firefox(executable_path='geckodriver', options=options)
         self.env = env
 
+class Chrome(Skating):
+    def __init__(self, env):
+        self.driver = webdriver.Chrome()
+        self.env = env
+
+class HeadlessChrome(Skating):
+    def __init__(self, env):
+        options = webdriver.chrome.options.Options()
+        options.add_argument('--headless')
+        self.driver = webdriver.Chrome(options=options)
+        self.env = env
+
 if __name__ == '__main__':
-    if len(sys.argv) == 1:
-        reserve = Skating(env)
+    headless = any('--headless' == arg for arg in sys.argv)
+    chrome = any('--chrome' == arg for arg in sys.argv)
+
+    if headless and chrome:
+        reserve = HeadlessChrome(env)
+    elif not headless and chrome:
+        reserve = Chrome(env)
+    elif headless and not chrome:
+        reserve = Headless(env)
     else:
-        if sys.argv[1] == '--headless':
-            reserve = Headless(env)
-        else:
-            reserve = Skating(env)
+        reserve = Skating(env)
 
     reserve.login()
     reserve.skatePage()

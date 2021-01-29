@@ -16,6 +16,7 @@ python3 main.py
 
 Options:
 --headless  (headless operation, no browser GUI)
+--chrome    (chrome operation)
 ```
 
 ## GCP
@@ -35,14 +36,15 @@ sudo mv geckodriver /usr/bin/geckodriver
 ```
 
 ## Raspberry Pi
-TODO: Need to build headless chrome functionality.
-
 [ChromeDriver installation for Raspberry Pi](https://ivanderevianko.com/2020/01/selenium-chromedriver-for-raspberrypi)
+```
+sudo apt-get install chromium-browser chromium-chromedriver
+```
 
 ## CRON Job
 [Setting up a CRON Job](https://vitux.com/how-to-setup-a-cron-job-in-debian-10/)
 
 Run at 12:50 GMT (7:50 ET) on Thursday + Saturday during January, February, March
 ```
-50 12 * 1,2,3 4,6 /usr/bin/python3 /...path to file/gcp.py >> /...path to log/log.log 2>&1
+50 12 * 1,2,3 4,6 /usr/bin/python3 /home/USERNAME/skating_reservation/morning_script.py >> /home/USERNAME/skating_reservation/log.log 2>&1
 ```

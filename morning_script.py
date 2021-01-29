@@ -1,6 +1,6 @@
 import env
-import time
-from main import Headless
+import time, sys
+from main import Headless, HeadlessChrome
 
 # checking if it close to the time for registration to open at 8AM ET or 1PM GMT
 def checkTime():
@@ -23,7 +23,13 @@ if __name__ == '__main__':
     else:
         env.time="6:00PM"
 
-    reserve = Headless(env)
+    chrome = any('--chrome' == arg for arg in sys.argv)
+
+    if chrome:
+        reserve = HeadlessChrome(env)
+    else:
+        reserve = Headless(env)
+
     reserve.login()
     reserve.skatePage()
     reserve.selectPark()
