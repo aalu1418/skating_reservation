@@ -41,6 +41,8 @@ sudo mv geckodriver /usr/bin/geckodriver
 sudo apt-get install chromium-browser chromium-chromedriver
 ```
 
+[Adjust SSH timeout for the Pi](https://www.digitalocean.com/community/questions/how-to-increase-ssh-connection-timeout)
+
 ## CRON Job
 [Setting up a CRON Job](https://vitux.com/how-to-setup-a-cron-job-in-debian-10/)
 
