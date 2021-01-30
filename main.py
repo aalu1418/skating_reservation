@@ -28,7 +28,7 @@ class Skating():
         try:
             self.driver.find_element_by_xpath("//a[@title='Reservations for Skate']").click()
         except Exception as e:
-            print("Retrying skatePage")
+            print("Retrying skatePage", e)
             time.sleep(self.retryTime)
             self.skatePage()
 
@@ -40,7 +40,7 @@ class Skating():
             self.driver.find_element_by_xpath("//a[@title='Show Courses']").click()
             time.sleep(self.retryTime)
         except Exception as e:
-            print("Retrying selectPark")
+            print("Retrying selectPark", e)
             time.sleep(self.retryTime)
             self.selectPark()
 
@@ -50,7 +50,7 @@ class Skating():
             self.driver.find_element_by_xpath("//a[@title='Click here to jump to the last page.']").click()
             time.sleep(self.retryTime)
         except Exception as e:
-            print("Retrying lastPage")
+            print("Retrying lastPage", e)
             time.sleep(self.retryTime)
             self.lastPage()
 
@@ -60,7 +60,7 @@ class Skating():
             self.driver.find_element_by_xpath("//a[@title='Click here to jump to the previous page.']").click()
             time.sleep(self.retryTime)
         except Exception as e:
-            print("Retrying prevPage")
+            print("Retrying prevPage", e)
             time.sleep(self.retryTime)
             self.prevPage()
 
@@ -80,7 +80,7 @@ class Skating():
             self.prevPage()
             self.selectTime(time)
         except Exception as e:
-            print("Retrying selectTime")
+            print("Retrying selectTime", e)
             time.sleep(self.retryTime)
             self.selectTime()
 
@@ -106,7 +106,7 @@ class Skating():
         try:
             self.driver.find_element_by_xpath("//input[@title='Click here to complete transaction and proceed to transaction confirmation page.']").click()
         except Exception as e:
-            print("Retrying submit")
+            print("Retrying submit", e)
             time.sleep(self.retryTime)
             self.submit()
 
@@ -115,7 +115,7 @@ class Skating():
         try:
             self.driver.find_element_by_xpath("//input[@title='Click to agree with the Release of Liability, Waiver of Claims, Assumption of Risks and Indemnity Agreement']").click()
         except Exception as e:
-            print("Retrying waiverAgreement")
+            print("Retrying waiverAgreement", e)
             time.sleep(self.retryTime)
             self.waiverAgreement()
 
