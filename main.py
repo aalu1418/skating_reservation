@@ -11,17 +11,23 @@ class Skating():
         self.env = env
 
     #login to the eFun platform
-    def login(self):
+    def setup(self):
         self.driver.get("https://efun.toronto.ca/TorontoFun/Start/Start.asp")
         self.retryTime = 1
         self.startTime = time.time()
 
-        self.driver.find_element_by_xpath("//a[@title='Click here to log in.']").click()
-        client = self.driver.find_element_by_id("ClientBarcode")
-        client.send_keys(self.env.clientNumber)
-        password = self.driver.find_element_by_id("AccountPIN")
-        password.send_keys(self.env.familyNumber)
-        self.driver.find_element_by_id("Enter").click()
+    def login(self):
+        try:
+            self.driver.find_element_by_xpath("//a[@title='Click here to log in.']").click()
+            client = self.driver.find_element_by_id("ClientBarcode")
+            client.send_keys(self.env.clientNumber)
+            password = self.driver.find_element_by_id("AccountPIN")
+            password.send_keys(self.env.familyNumber)
+            self.driver.find_element_by_id("Enter").click()
+        except Exception as e:
+            print("Retrying login", e)
+            time.sleep(self.retryTime)
+            self.login()
 
     #go to the reserve skate page
     def skatePage(self):
@@ -31,6 +37,7 @@ class Skating():
             print("Retrying skatePage", e)
             time.sleep(self.retryTime)
             self.skatePage()
+
 
     # select the park for reservation
     def selectPark(self):
@@ -78,7 +85,7 @@ class Skating():
                     return
 
             self.prevPage()
-            self.selectTime(time)
+            self.selectTime()
         except Exception as e:
             print("Retrying selectTime", e)
             time.sleep(self.retryTime)
@@ -162,11 +169,12 @@ if __name__ == '__main__':
     else:
         reserve = Skating(env)
 
+    reserve.setup()
     reserve.login()
     reserve.skatePage()
     reserve.selectPark()
     reserve.lastPage()
     reserve.selectTime()
-    reserve.registerAll()
-    reserve.complete()
+    # reserve.registerAll()
+    # reserve.complete()
     reserve.close()

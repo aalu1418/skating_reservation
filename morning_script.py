@@ -18,7 +18,7 @@ def checkTime():
 if __name__ == '__main__':
     print(time.gmtime())
     env.park = 'Nathan Phillips Square'
-    if time.strftime("%A") == 'Saturday':
+    if time.strftime("%A") == 'Saturday' or time.strftime("%A") == 'Sunday':
         env.time="4:00PM"
     else:
         env.time="6:00PM"
@@ -30,6 +30,7 @@ if __name__ == '__main__':
     else:
         reserve = Headless(env)
 
+    reserve.setup()
     reserve.login()
     reserve.skatePage()
     reserve.selectPark()
