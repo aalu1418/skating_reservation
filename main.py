@@ -93,20 +93,48 @@ class Skating():
 
     # register all members of the family
     def registerAll(self):
-        select = Select(self.driver.find_element_by_name('ClientID'))
+        select = self.userSelect()
         names = [name.text for name in select.options[1:]]
 
         for i in range(len(names)):
             if i != 0:
-                select = Select(self.driver.find_element_by_name('ClientID'))
+                select = self.userSelect()
 
             select.select_by_visible_text(names[i])
             if i+1 is not len(names):
-                self.driver.find_element_by_xpath("//input[@title='Select to add another client to cart.']").click()
+                self.addNewClient()
 
             time.sleep(self.retryTime)
 
-        self.driver.find_element_by_xpath("//input[@title='Click here to go to the checkout and pay for the items in your shopping cart.']").click()
+        self.checkout()
+
+    # checkout button
+    def checkout(self):
+        try:
+            self.driver.find_element_by_xpath("//input[@title='Click here to go to the checkout and pay for the items in your shopping cart.']").click()
+        except Exception as e:
+             print("Retrying checkout", e)
+             time.sleep(self.retryTime)
+             self.checkout()
+
+    # click add new client button
+    def addNewClient(self):
+        try:
+            self.driver.find_element_by_xpath("//input[@title='Select to add another client to cart.']").click()
+        except Exception as e:
+             print("Retrying addNewClient", e)
+             time.sleep(self.retryTime)
+             self.addNewClient()
+
+    # returning user select instance
+    def userSelect(self):
+        try:
+            select = Select(self.driver.find_element_by_name('ClientID'))
+            return select
+        except Exception as e:
+            print("Retrying userSelect", e)
+            time.sleep(self.retryTime)
+            self.userSelect()
 
     # submit registration
     def submit(self):
@@ -175,6 +203,6 @@ if __name__ == '__main__':
     reserve.selectPark()
     reserve.lastPage()
     reserve.selectTime()
-    # reserve.registerAll()
-    # reserve.complete()
+    reserve.registerAll()
+    reserve.complete()
     reserve.close()

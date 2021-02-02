@@ -8,8 +8,8 @@ def checkTime():
 
     current = time.gmtime()
     if current.tm_hour == 8+5 and current.tm_min >= 0:
-        if current.tm_min == 0 and current.tm_sec < 10:
-            time.sleep(10-current.tm_sec)
+        if current.tm_min == 0 and current.tm_sec < 20:
+            time.sleep(20-current.tm_sec)
 
         check = True
 
