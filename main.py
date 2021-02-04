@@ -77,6 +77,7 @@ class Skating():
             data = self.driver.find_elements_by_xpath("//tr[@id='activity-course-row']")
             for element in data:
                 if self.env.time in element.text:
+                    print(element.text)
                     html = element.get_attribute('innerHTML')
                     match = re.findall(r'href=[\'"]?([^\'" >]+)', html)
                     url = [s for s in match if "MyBasket" in s]
@@ -93,10 +94,12 @@ class Skating():
 
     # register all members of the family
     def registerAll(self):
+        print("registering")
         select = self.userSelect()
         names = [name.text for name in select.options[1:]]
 
         for i in range(len(names)):
+            print(names[i])
             if i != 0:
                 select = self.userSelect()
 
