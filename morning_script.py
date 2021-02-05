@@ -51,9 +51,11 @@ if __name__ == '__main__':
             time.sleep(15)
 
     #conduct one last page refresh by going to the prev page and then last page, then run select time algorithm
+    startTime = time.time();
     reserve.prevPage()
     reserve.lastPage()
     reserve.selectTime()
     reserve.registerAll()
     reserve.complete()
+    print("Algorithm completed in (s):", time.time()-startTime)
     reserve.close()
