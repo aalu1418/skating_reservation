@@ -8,8 +8,8 @@ def checkTime():
 
     current = time.gmtime()
     if current.tm_hour == 8+5 and current.tm_min >= 0:
-        if current.tm_min == 0 and current.tm_sec < 30:
-            time.sleep(30-current.tm_sec)
+        if current.tm_sec < 20:
+            time.sleep(20-current.tm_sec)
 
         check = True
 
@@ -51,8 +51,10 @@ if __name__ == '__main__':
             time.sleep(15)
 
     #conduct one last page refresh by going to the prev page and then last page, then run select time algorithm
+    print('Algorithm triggered')
     startTime = time.time();
     reserve.prevPage()
+    time.sleep(2)
     reserve.lastPage()
     reserve.selectTime()
     reserve.registerAll()
